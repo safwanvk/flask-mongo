@@ -42,6 +42,10 @@ class MovieApi(Resource):
     data = {'Name' : movie['name'], 'Casts' : movie['casts'], 'Genres': movie['genres']}
     return make_response(jsonify({'msg':'Success','data':data}), 200)
 
+  def delete(self, id):
+    movie = db_operations.delete_one({'_id' : ObjectId(id)})
+    return make_response(jsonify({'msg':'Success'}), 200)
+
 
 
 
@@ -51,3 +55,10 @@ class MovieBulkUpload(Resource):
     db_operations.insert_many(body.get('data'))
     return {'result' : 'Created successfully'}, 200
 
+
+#Bulk Update
+# db_operations.update_many()
+
+
+#many delete
+# db_operations.delete_many()
