@@ -9,6 +9,12 @@ from bson.objectid import ObjectId
 class MoviesApi(Resource):
   def get(self):
     try:
+      filter = request.args.get('filter')
+      if filter:
+        movie = db_operations.find_one({'_id' : ObjectId(filter)})
+        data = {'Name' : movie['name'], 'Casts' : movie['casts'], 'Genres': movie['genres']}
+        return make_response(jsonify({'msg':'Success','data':data}), 200)
+
       movies = db_operations.find()
       data = [{'Name' : movie['name'], 'Casts' : movie['casts'], 'Genres': movie['genres']} for movie in movies]
       return make_response(jsonify({'msg':'Success','data':data}), 200)
@@ -32,7 +38,7 @@ class MovieApi(Resource):
     return make_response(jsonify({'msg':'Success'}), 200)
 
   def get(self, id):
-    movie = db_operations.find_one({'_id' : ObjectId(id)})
+    movie = db_operations.find({'_id' : ObjectId(id)})
     data = {'Name' : movie['name'], 'Casts' : movie['casts'], 'Genres': movie['genres']}
     return make_response(jsonify({'msg':'Success','data':data}), 200)
 
