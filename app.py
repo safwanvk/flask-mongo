@@ -1,10 +1,18 @@
-from flask import Flask
+from flask import Flask, request, Response
+from database.db import initialize_db
+from database.models import *
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return {'hello': 'world'}
+app.config['MONGODB_SETTINGS'] = {
+    'host': 'mongodb://localhost/movie'
+}
+
+initialize_db(app)
 
 
-app.run()
+
+
+if __name__ == "__main__":
+    app.debug = True
+    app.run(host='0.0.0.0')
