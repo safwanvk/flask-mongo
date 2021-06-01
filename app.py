@@ -21,6 +21,11 @@ def add_movie():
         print(e)
         return {'msg':'error'}
 
+@app.route('/movies')
+def get_movies():
+    movies = Movie.objects().to_json()
+    return Response(movies, mimetype="application/json", status=200)
+
 
 if __name__ == "__main__":
     app.debug = True
