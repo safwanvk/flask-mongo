@@ -1,6 +1,6 @@
 from flask import Response, request
-from database.models import Movie
 from flask_restful import Resource
+from model import *
 
 class MoviesApi(Resource):
   def get(self):
@@ -9,9 +9,10 @@ class MoviesApi(Resource):
 
   def post(self):
     body = request.get_json()
-    movie = Movie(**body).save()
-    id = movie.id
-    return {'id': str(id)}, 200
+    db_operations.insert_one(body)
+
+
+    return {'result' : 'Created successfully'}, 200
 
 class MovieApi(Resource):
   def put(self, id):

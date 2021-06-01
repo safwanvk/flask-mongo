@@ -1,19 +1,18 @@
-from flask import Flask, request, Response
-from database.db import initialize_db
-from resources.routes import *
-from flask_restful import Api
 
-app = Flask(__name__)
+from flask_pymongo import PyMongo
+from movie import *
+from flask_restful import Api
+from model import *
 
 api = Api(app)
 
-app.config['MONGODB_SETTINGS'] = {
-    'host': 'mongodb://localhost/movie'
-}
 
-initialize_db(app)
 
-initialize_routes(api)
+
+
+
+api.add_resource(MoviesApi, '/api/movies')
+api.add_resource(MovieApi, '/api/movies/<id>')
 
 
 if __name__ == "__main__":
