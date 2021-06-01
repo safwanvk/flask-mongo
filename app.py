@@ -13,7 +13,7 @@ initialize_db(app)
 @app.route('/movies', methods=['POST'])
 def add_movie():
     try:
-        body = request.get_json()
+        body = request.get_json() 
         movie = Movie(**body).save()
         id = movie.id
         return {'id': str(id)}, 200
@@ -25,6 +25,12 @@ def add_movie():
 def get_movies():
     movies = Movie.objects().to_json()
     return Response(movies, mimetype="application/json", status=200)
+
+@app.route('/movies/<id>', methods=['PUT'])
+def update_movie(id):
+    body = request.get_json()
+    Movie.objects.get(id=id).update(**body)
+    return '', 200
 
 
 if __name__ == "__main__":
