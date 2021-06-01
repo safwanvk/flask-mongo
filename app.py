@@ -32,6 +32,11 @@ def update_movie(id):
     Movie.objects.get(id=id).update(**body)
     return '', 200
 
+@app.route('/movies/<id>', methods=['DELETE'])
+def delete_movie(id):
+    Movie.objects.get(id=id).delete()
+    return '', 200
+
 
 if __name__ == "__main__":
     app.debug = True
