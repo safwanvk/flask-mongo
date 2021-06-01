@@ -7,12 +7,9 @@ from model import *
 api = Api(app)
 
 
-
-
-
-
 api.add_resource(MoviesApi, '/api/movies')
 api.add_resource(MovieApi, '/api/movies/<id>')
+api.add_resource(MovieBulkUpload, '/api/movies_bulk')
 
 
 if __name__ == "__main__":

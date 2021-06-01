@@ -27,3 +27,11 @@ class MovieApi(Resource):
   def get(self, id):
     movies = Movie.objects.get(id=id).to_json()
     return Response(movies, mimetype="application/json", status=200)
+
+
+class MovieBulkUpload(Resource):
+  def post(self):
+    body = request.get_json()
+    db_operations.insert_many(body.get('data'))
+    return {'result' : 'Created successfully'}, 200
+
