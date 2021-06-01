@@ -1,6 +1,10 @@
 from flask import  jsonify, request,make_response
 from flask_restful import Resource
 from model import *
+from utils import *
+
+from bson.objectid import ObjectId
+
 
 class MoviesApi(Resource):
   def get(self):
@@ -15,22 +19,24 @@ class MoviesApi(Resource):
   def post(self):
     body = request.get_json()
     db_operations.insert_one(body)
-    return jsonify({'result' : 'Created successfully'}, 200)
+    return make_response(jsonify({'msg':'Success'}), 200)
+
+  
 
 
 class MovieApi(Resource):
   def put(self, id):
     body = request.get_json()
-    Movie.objects.get(id=id).update(**body)
-    return '', 200
+    db_operations.update_one({'_id': ObjectId(id)}, {'$set':body})
 
-  def delete(self):
-    db_operations.delete_one({'_id':ObjectId('60b5f1f2502eadbd05379293')})
-    return '', 200
+    return make_response(jsonify({'msg':'Success'}), 200)
 
   def get(self, id):
-    movies = Movie.objects.get(id=id).to_json()
-    return Response(movies, mimetype="application/json", status=200)
+    movie = db_operations.find_one({'_id' : ObjectId(id)})
+    data = {'Name' : movie['name'], 'Casts' : movie['casts'], 'Genres': movie['genres']}
+    return make_response(jsonify({'msg':'Success','data':data}), 200)
+
+
 
 
 class MovieBulkUpload(Resource):
